@@ -16,26 +16,37 @@ logger = logging.getLogger(__name__)
 
 
 
+from rest_framework.exceptions import ValidationError
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 @throttle_classes([RegisterThrottle])
 def register(request):
     request.throttle_scope = 'register'
+    serializer = RegistrationSerializer(data=request.data)
     try:
-        serializer = RegistrationSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
-            logger.info(f"New user registered: {user.email}")
-            return Response({
-                "user": serializer.data,
-                "message": "User created successfully."
-            }, status=status.HTTP_201_CREATED)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        logger.info(f"New user registered: {user.email}")
+        return Response({
+            "user": serializer.data,
+            "message": "User created successfully."
+        }, status=status.HTTP_201_CREATED)
+
+    except ValidationError as ve:
+        logger.warning(f"Validation error during registration: {ve}")
+        return Response({
+            'status': 'error',
+            'message': 'Validation failed',
+            'errors': ve.detail  
+        }, status=status.HTTP_400_BAD_REQUEST)
+
     except Exception as e:
         logger.exception("Error during user registration")
         return Response({
+            'status': 'error',
             'message': "Something went wrong on our end."
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 
