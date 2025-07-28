@@ -23,14 +23,14 @@ A simple, production-ready Django authentication boilerplate using **JWT (JSON W
 ## 📦 Installation
 
 ```bash
-pip install django-auth-boilerplate
+pip install auth-boilerplate
 ````
 
 Or if you’re developing locally:
 
 ```bash
-git clone https://github.com/meekemma/auth-boilerplate.git
-cd django-auth-boilerplate
+git clone https://github.com/Meekemma/auth-boilerplate.git
+cd auth-boilerplate
 pip install -r requirements.txt
 ```
 
@@ -96,44 +96,90 @@ Copy the result and paste it into your `.env` or `settings.py` as:
 ```python
 SECRET_KEY = 'your-generated-secret-key'
 ```
-
 ---
+
+
 
 ## 📮 API Endpoints
 
-| Method | Endpoint          | Description       |
-| ------ | ----------------- | ----------------- |
-| POST   | `/register/`      | Register a user   |
-| POST   | `/login/`         | Obtain tokens     |
-| POST   | `/logout/`        | Blacklist refresh |
-| POST   | `/token/refresh/` | Refresh access    |
+| Method | Endpoint          | Description              |
+| ------ | ----------------- | ------------------------ |
+| POST   | `/register/`      | Register a user          |
+| POST   | `/login/`         | Obtain tokens (JWT)      |
+| POST   | `/logout/`        | Logout & blacklist token |
+| POST   | `/token/refresh/` | Refresh access token     |
 
 ---
 
 ## 🧪 Testing with Postman
 
-Use these request bodies for testing:
-
-**Registration**
+### ✅ **Registration**
 
 ```json
 {
   "first_name": "John",
   "last_name": "Doe",
   "email": "john@example.com",
-  "password": "strongpassword",
-  "password2": "strongpassword"
+  "password": "StrongPassword123!",
+  "password2": "StrongPassword123!"
 }
 ```
 
-**Login**
+### 🔐 **Login**
 
 ```json
 {
   "email": "john@example.com",
-  "password": "strongpassword"
+  "password": "StrongPassword123!"
 }
 ```
+
+**Response:**
+
+```json
+{
+  "refresh": "your-refresh-token",
+  "access": "your-access-token",
+  "user": {
+    "id": 1,
+    "email": "john@example.com",
+    "first_name": "John",
+    "last_name": "Doe"
+  }
+}
+```
+
+---
+
+### 🚪 **Logout**
+
+```json
+{
+  "refresh": "your-refresh-token"
+}
+```
+
+**Note:** This will blacklist the token and invalidate future use.
+
+---
+
+### 🔄 **Token Refresh**
+
+```json
+{
+  "refresh": "your-refresh-token"
+}
+```
+
+**Response:**
+
+```json
+{
+  "access": "new-access-token"
+}
+```
+
+---
 
 ---
 

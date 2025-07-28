@@ -5,6 +5,8 @@ import pathlib
 BASE_DIR = pathlib.Path(__file__).resolve().parent
 README = (BASE_DIR / "README.md").read_text(encoding="utf-8")
 
+
+
 setup(
     name="django-auth-boilerplate",
     version="0.1.0",
@@ -13,10 +15,10 @@ setup(
     description="A clean Django authentication boilerplate with JWT, rate limiting, and custom exception handling.",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/meekemma/django-auth-boilerplate",
+    url="https://github.com/Meekemma/auth-boilerplate.git",
     project_urls={
-        "Bug Tracker": "https://github.com/meekemma/django-auth-boilerplate/issues",
-        "Documentation": "https://github.com/meekemma/django-auth-boilerplate#readme",
+        "Bug Tracker": "https://github.com/Meekemma/auth-boilerplate.git/issues",
+        "Documentation": "https://github.com/Meekemma/auth-boilerplate.git#readme",
     },
     license="MIT",
     packages=find_packages(exclude=["tests", "tests.*", "example_project", "example_project.*"]),
